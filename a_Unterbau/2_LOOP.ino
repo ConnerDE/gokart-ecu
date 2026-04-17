@@ -60,10 +60,24 @@ void loop() {
   }
   lastUsbTaster = usbTasterPressed;
 
-  bool drsActive = can.isDRS() || safety.brakePressed;
-  mcp2.digitalWrite(MCP2_DRS_L, drsActive ? HIGH : LOW);
-  mcp2.digitalWrite(MCP2_DRS_R, drsActive ? HIGH : LOW);
+  bool systemOK = can.isAlive() && !safety.emergencyActive() && voltageOK && !overTemp; // großteil noch implementieren
 
+  static bool lastDRSButton = false;
+  bool currentDRSButton = can.isDRS();
+
+  if (currentDRSButton && !lastDRSButton) {
+    drsButtonPressed();
+  }
+
+  lastDRSButton = currentDRSButton;
+
+  drsUpdate(speed, throttle, safety.brakePressed(), rpm, systemOK);
+  bool drsActive = isDRSActive();
+  void setDRS(bool drsActive) {
+    mcp2.digitalWrite(MCP2_DRS_L, drsActive ? HIGH : LOW);
+    mcp2.digitalWrite(MCP2_DRS_R, drsActive ? HIGH : LOW);
+  }
+  
   safety.setCanLoss(!can.dataValid);
 
   if (!can.dataValid || !safety.systemActive) {
