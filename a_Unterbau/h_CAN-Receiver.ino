@@ -64,7 +64,7 @@ public:
 
   bool isBlinkRight()   { return !(buttons & (1 << 0)); }
   bool isShiftDown()    { return !(buttons & (1 << 1)); }
-  bool isDRS()          { return !(buttons & (1 << 2)); }
+  bool isDRS()          { return !(buttons & (1 << 2)); }  // !!!
   bool isReverse()      { return !(buttons & (1 << 3)); }
   bool isBlinkLeft()    { return !(buttons & (1 << 4)); }
   bool isShiftUp()      { return !(buttons & (1 << 5)); }
