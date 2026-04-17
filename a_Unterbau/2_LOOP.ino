@@ -1,4 +1,3 @@
-
 /* ==================== LOOP ==================== */
 void loop() {
   esp_task_wdt_reset();  // Feed the watchdog
@@ -41,6 +40,7 @@ void loop() {
     }
   }
 
+  // Launch Control
   bool launchActive = false;
   if (safety.ignitionOn && can.isLaunch() && safety.brakePressed) {
     launchActive = true;
@@ -60,34 +60,45 @@ void loop() {
   }
   lastUsbTaster = usbTasterPressed;
 
-  bool systemOK = can.isAlive() && !safety.emergencyActive() && voltageOK && !overTemp; // großteil noch implementieren
+  // ================= DRS =================
 
+  // Button (Flankenerkennung)
   static bool lastDRSButton = false;
   bool currentDRSButton = can.isDRS();
 
   if (currentDRSButton && !lastDRSButton) {
     drsButtonPressed();
   }
-
   lastDRSButton = currentDRSButton;
 
-  drsUpdate(speed, throttle, safety.brakePressed(), rpm, systemOK);
-  bool drsActive = isDRSActive();
-  void setDRS(bool drsActive) {
-    mcp2.digitalWrite(MCP2_DRS_L, drsActive ? HIGH : LOW);
-    mcp2.digitalWrite(MCP2_DRS_R, drsActive ? HIGH : LOW);
-  }
-  
+  // System OK (minimal, später erweitern)
+  bool systemOK = can.isAlive() && !safety.emergencyActive() && voltageOK && !overTemp;
+
+  // DRS Logik
+  drsUpdate(currentSpeed, gasPedal.getThrottle(), safety.brakePressed, safety.currentRPM, systemOK);
+
+  // Output mit HARD Failsafe
+  bool drsActive = isDRSActive() && !safety.brakePressed;
+
+  // ================= FAILSAFE CHECK =================
   safety.setCanLoss(!can.dataValid);
 
   if (!can.dataValid || !safety.systemActive) {
+    // HARD FAILSAFE
+    setDRS(false);
+
     blinkerLeftState = false;
     blinkerRightState = false;
     warnBlinkState = false;
+
     lights.update(can, safety, false);
     updateDisplay(gearbox.getGear(), safety, can);
     return;
   }
+
+  // ================= HARDWARE OUTPUT =================
+
+  setDRS(drsActive);
 
   setExhaustServoAngle(can.exhaustAngle);
   mcp2.digitalWrite(MCP2_HUPE, can.isHorn() ? HIGH : LOW);
