@@ -44,7 +44,7 @@ a_Unterbau/
 
 ## BLE Commands
 
-### Calibration
+### Kalibration
 | Command | Funktion |
 |---|---|
 | `CAL:GAS_MIN` | Gaspedalposition als Minimum speichern |
