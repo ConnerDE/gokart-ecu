@@ -43,11 +43,29 @@ a_Unterbau/
 ```
 
 ## BLE Commands
+
+### Calibration
 | Command | Funktion |
 |---|---|
-| `DRS:SHOW_ON` | Show-Mode aktivieren |
-| `DRS:SHOW_OFF` | Show-Mode deaktivieren |
+| `CAL:GAS_MIN` | Gaspedalposition als Minimum speichern |
+| `CAL:GAS_MAX` | Gaspedalposition als Maximum speichern |
+| `SET:SRV_GAS_MIN:<wert>` | Servo Gas Minimalwinkel setzen |
+| `SET:SRV_GAS_MAX:<wert>` | Servo Gas Maximalwinkel setzen |
+| `SET:SRV_EXH_MIN:<wert>` | Servo Auspuff Minimalwinkel setzen |
+| `SET:SRV_EXH_MAX:<wert>` | Servo Auspuff Maximalwinkel setzen |
 
+### Reset
+| Command | Funktion |
+|---|---|
+| `RESET_HOURS` | Betriebsstunden auf 0 zurücksetzen |
+| `RESET_CHAIN` | Kettenschaltzähler auf 0 zurücksetzen |
+
+### Sonstiges
+| Command | Funktion |
+|---|---|
+| `SPD:<wert>` | Geschwindigkeit manuell setzen (float) |
+| `DRS:SHOW_ON` | DRS Show-Mode aktivieren (bypasses alle Bedingungen) |
+| `DRS:SHOW_OFF` | DRS Show-Mode deaktivieren |
 ## License
 ![License: Proprietary](https://shields.io)
 This project is proprietary. All rights reserved.
