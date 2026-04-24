@@ -49,4 +49,4 @@ a_Unterbau/
 | `DRS:SHOW_OFF` | Show-Mode deaktivieren |
 
 ## Lizenz
-MIT License
+All Rights Reserved. View LICENSE-File
