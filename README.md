@@ -48,5 +48,7 @@ a_Unterbau/
 | `DRS:SHOW_ON` | Show-Mode aktivieren |
 | `DRS:SHOW_OFF` | Show-Mode deaktivieren |
 
-## Lizenz
-All Rights Reserved. View LICENSE-File
+## License
+![License: Proprietary](https://shields.io)
+This project is proprietary. All rights reserved.
+
